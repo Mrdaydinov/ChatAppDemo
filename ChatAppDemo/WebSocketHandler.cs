@@ -6,6 +6,15 @@ namespace ChatAppDemo;
 public abstract class WebSocketHandler
 {
     protected ConnectionManager _connectionManager { get; set; }
+
+    static protected Dictionary<string, string> Contacts = new Dictionary<string, string>()
+    {
+        {"Murad", null},
+        {"Vlad", null},
+        {"Camal", null},
+        {"Azna", null}
+        
+    };
     
     public WebSocketHandler(ConnectionManager connectionManager)
     {
@@ -15,6 +24,15 @@ public abstract class WebSocketHandler
     public virtual async Task OnConnected(WebSocket socket)
     {
         _connectionManager.AddSocket(socket);
+        foreach (var contact in Contacts)
+        {
+            if (contact.Value == null)
+            {
+                Contacts[contact.Key] = _connectionManager.GetId(socket);
+                break;
+            }
+        }
+      
     }
 
     public virtual async Task OnDisconnected(WebSocket socket)
@@ -35,7 +53,7 @@ public abstract class WebSocketHandler
         
     }
 
-    public async Task SendMessageAsycn(string socketId, string message)
+    public async Task SendMessageAsync(string socketId, string message)
     {
         await SendMessageAsync(_connectionManager.GetSocketById(socketId),message);
     }
@@ -53,10 +71,19 @@ public abstract class WebSocketHandler
 
     public async Task ReceiveAsync(WebSocket socket, WebSocketReceiveResult result, byte[] buffer)
     {
-        var socetId = _connectionManager.GetId(socket);
-        var message = $"{socetId}  said {Encoding.UTF8.GetString(buffer, 0, result.Count)}";
-       
-        await SendMessageToAllAsync(message);
+
+
+        
+
+        var message = Encoding.UTF8.GetString(buffer, 0, result.Count);
+        var name = message.Split(" ")[0];
+        var socetId = Contacts[name];
+        var sms = string.Join(" ",message.Split(" ")[1..]);
+        var messageToSend = $"{name}  said {sms}";
+
+        await SendMessageAsync(socetId,messageToSend);
+
+        //await SendMessageToAllAsync(message);
     }
     
 }
