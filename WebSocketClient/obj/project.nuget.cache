@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "qZ28qy4kZEMWT8BqZBpwYK5H+cvZj1bVEJDqdp71LMD4dyvyvG6foSOEMqVsAghg/eGljHII6F0bYHLTl9U7Mg==",
+  "dgSpecHash": "slIaH1gzzZj7y+688Xd9SpmTN+z1Bwpz1CjnoNJPXQyZD+O8IOanpfucT5Z2kNth18DHq65m/Ykn4O4by5EuOA==",
   "success": true,
-  "projectFilePath": "/Users/elvin/Downloads/ChatAppMuradRepo/ChatAppDemo/WebSocketClient/WebSocketClient.csproj",
+  "projectFilePath": "C:\\Users\\muvi_\\source\\repos\\ChatAppDemoMyRepo\\ChatAppDemo\\WebSocketClient\\WebSocketClient.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

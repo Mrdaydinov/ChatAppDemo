@@ -1,26 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "/Users/elvin/Downloads/ChatAppMuradRepo/ChatAppDemo/WebSocketClient/WebSocketClient.csproj": {}
+    "C:\\Users\\muvi_\\source\\repos\\ChatAppDemoMyRepo\\ChatAppDemo\\WebSocketClient\\WebSocketClient.csproj": {}
   },
   "projects": {
-    "/Users/elvin/Downloads/ChatAppMuradRepo/ChatAppDemo/WebSocketClient/WebSocketClient.csproj": {
+    "C:\\Users\\muvi_\\source\\repos\\ChatAppDemoMyRepo\\ChatAppDemo\\WebSocketClient\\WebSocketClient.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/elvin/Downloads/ChatAppMuradRepo/ChatAppDemo/WebSocketClient/WebSocketClient.csproj",
+        "projectUniqueName": "C:\\Users\\muvi_\\source\\repos\\ChatAppDemoMyRepo\\ChatAppDemo\\WebSocketClient\\WebSocketClient.csproj",
         "projectName": "WebSocketClient",
-        "projectPath": "/Users/elvin/Downloads/ChatAppMuradRepo/ChatAppDemo/WebSocketClient/WebSocketClient.csproj",
-        "packagesPath": "/Users/elvin/.nuget/packages/",
-        "outputPath": "/Users/elvin/Downloads/ChatAppMuradRepo/ChatAppDemo/WebSocketClient/obj/",
+        "projectPath": "C:\\Users\\muvi_\\source\\repos\\ChatAppDemoMyRepo\\ChatAppDemo\\WebSocketClient\\WebSocketClient.csproj",
+        "packagesPath": "C:\\Users\\muvi_\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\muvi_\\source\\repos\\ChatAppDemoMyRepo\\ChatAppDemo\\WebSocketClient\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/elvin/NuGet.Config",
-          "/Users/elvin/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\muvi_\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -54,7 +55,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.308/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -24,15 +24,6 @@ public abstract class WebSocketHandler
     public virtual async Task OnConnected(WebSocket socket)
     {
         _connectionManager.AddSocket(socket);
-        foreach (var contact in Contacts)
-        {
-            if (contact.Value == null)
-            {
-                Contacts[contact.Key] = _connectionManager.GetId(socket);
-                break;
-            }
-        }
-      
     }
 
     public virtual async Task OnDisconnected(WebSocket socket)
@@ -79,11 +70,42 @@ public abstract class WebSocketHandler
         var name = message.Split(" ")[0];
         var socetId = Contacts[name];
         var sms = string.Join(" ",message.Split(" ")[1..]);
-        var messageToSend = $"{name}  said {sms}";
+        var senderName = GetUserName(socket);
+        var messageToSend = $"{senderName} said: {sms}";
 
-        await SendMessageAsync(socetId,messageToSend);
+        if (socetId == null)
+        {
+            await SendMessageAsync(_connectionManager.GetId(socket), "User not online");
+        }
+        else
+            await SendMessageAsync(socetId, messageToSend);
 
         //await SendMessageToAllAsync(message);
     }
-    
+
+    public async Task AddContactAsync(string name, WebSocket socket)
+    {
+        Contacts[name] = _connectionManager.GetId(socket) ;
+    }
+
+
+    public string GetName(WebSocket socket, WebSocketReceiveResult result, byte[] buffer)
+    {
+        var message = Encoding.UTF8.GetString(buffer, 0, result.Count);
+        var name = message.Split(" ")[0];
+        return name;
+    }
+
+    public string GetUserName(WebSocket socket)
+    {
+        var socketId = _connectionManager.GetId(socket);
+        try
+        {
+            return Contacts.First(contact => contact.Value == socketId).Key;
+        }
+        catch (Exception)
+        {
+            throw new NotImplementedException("User not found");
+        }
+    }
 }
