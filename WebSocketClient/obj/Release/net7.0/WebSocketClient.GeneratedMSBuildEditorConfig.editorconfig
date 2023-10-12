@@ -8,4 +8,4 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = WebSocketClient
-build_property.ProjectDir = C:\Users\muvi_\source\repos\ChatAppDemo\WebSocketClient\
+build_property.ProjectDir = C:\Users\muvi_\source\repos\ChatAppDemoMyRepo\ChatAppDemo\WebSocketClient\
