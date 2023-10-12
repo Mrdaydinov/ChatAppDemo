@@ -1,3 +1,4 @@
+using System.Dynamic;
 using System.Net.WebSockets;
 using System.Text;
 
@@ -24,14 +25,6 @@ public abstract class WebSocketHandler
     public virtual async Task OnConnected(WebSocket socket)
     {
         _connectionManager.AddSocket(socket);
-        foreach (var contact in Contacts)
-        {
-            if (contact.Value == null)
-            {
-                Contacts[contact.Key] = _connectionManager.GetId(socket);
-                break;
-            }
-        }
       
     }
 
@@ -69,19 +62,57 @@ public abstract class WebSocketHandler
         }
     }
 
-    public async Task ReceiveAsync(WebSocket socket, WebSocketReceiveResult result, byte[] buffer)
+    public async Task AddContactAsync(string name, WebSocket socket)
+    {
+        
+        Contacts[name] = _connectionManager.GetId(socket);
+    }
+
+    public string GetName(WebSocket socket, WebSocketReceiveResult result, byte[] buffer)
     {
 
 
+        var message = Encoding.UTF8.GetString(buffer, 0, result.Count);
+        var name = message.Split(" ")[0];
+        return name;
+    }
+
+    public string GetUserName(WebSocket socket)
+    {
+        var socetId = _connectionManager.GetId(socket);
+        try
+        {
+            return Contacts.First(contact => contact.Value == socetId).Key;   
+        }
+        catch(Exception ex)
+        {
+            throw new NotImplementedException("User not found");
+        }
+
+    }
+    public async Task ReceiveAsync(WebSocket socket, WebSocketReceiveResult result, byte[] buffer)
+    {
         
 
         var message = Encoding.UTF8.GetString(buffer, 0, result.Count);
         var name = message.Split(" ")[0];
+        
         var socetId = Contacts[name];
+       
         var sms = string.Join(" ",message.Split(" ")[1..]);
-        var messageToSend = $"{name}  said {sms}";
+        var senderName = GetUserName(socket);
+        var messageToSend = $"{senderName}  said {sms}";
+        if (socetId == null)
+        {
+            messageToSend = "User not online";
+            await SendMessageAsync(_connectionManager.GetId(socket),messageToSend);
+        }
+        else
+        {
+            await SendMessageAsync(socetId,messageToSend);
+        }
 
-        await SendMessageAsync(socetId,messageToSend);
+       
 
         //await SendMessageToAllAsync(message);
     }
