@@ -1,3 +1,4 @@
+using System.Dynamic;
 using System.Net.WebSockets;
 using System.Text;
 
@@ -6,6 +7,15 @@ namespace ChatAppDemo;
 public abstract class WebSocketHandler
 {
     protected ConnectionManager _connectionManager { get; set; }
+
+    static protected Dictionary<string, string> Contacts = new Dictionary<string, string>()
+    {
+        {"Murad", null},
+        {"Vlad", null},
+        {"Camal", null},
+        {"Azna", null}
+        
+    };
     
     public WebSocketHandler(ConnectionManager connectionManager)
     {
@@ -15,6 +25,7 @@ public abstract class WebSocketHandler
     public virtual async Task OnConnected(WebSocket socket)
     {
         _connectionManager.AddSocket(socket);
+      
     }
 
     public virtual async Task OnDisconnected(WebSocket socket)
@@ -35,7 +46,7 @@ public abstract class WebSocketHandler
         
     }
 
-    public async Task SendMessageAsycn(string socketId, string message)
+    public async Task SendMessageAsync(string socketId, string message)
     {
         await SendMessageAsync(_connectionManager.GetSocketById(socketId),message);
     }
@@ -51,12 +62,59 @@ public abstract class WebSocketHandler
         }
     }
 
-    public async Task ReceiveAsync(WebSocket socket, WebSocketReceiveResult result, byte[] buffer)
+    public async Task AddContactAsync(string name, WebSocket socket)
+    {
+        
+        Contacts[name] = _connectionManager.GetId(socket);
+    }
+
+    public string GetName(WebSocket socket, WebSocketReceiveResult result, byte[] buffer)
+    {
+
+
+        var message = Encoding.UTF8.GetString(buffer, 0, result.Count);
+        var name = message.Split(" ")[0];
+        return name;
+    }
+
+    public string GetUserName(WebSocket socket)
     {
         var socetId = _connectionManager.GetId(socket);
-        var message = $"{socetId}  said {Encoding.UTF8.GetString(buffer, 0, result.Count)}";
+        try
+        {
+            return Contacts.First(contact => contact.Value == socetId).Key;   
+        }
+        catch(Exception ex)
+        {
+            throw new NotImplementedException("User not found");
+        }
+
+    }
+    public async Task ReceiveAsync(WebSocket socket, WebSocketReceiveResult result, byte[] buffer)
+    {
+        
+
+        var message = Encoding.UTF8.GetString(buffer, 0, result.Count);
+        var name = message.Split(" ")[0];
+        
+        var socetId = Contacts[name];
        
-        await SendMessageToAllAsync(message);
+        var sms = string.Join(" ",message.Split(" ")[1..]);
+        var senderName = GetUserName(socket);
+        var messageToSend = $"{senderName}  said {sms}";
+        if (socetId == null)
+        {
+            messageToSend = "User not online";
+            await SendMessageAsync(_connectionManager.GetId(socket),messageToSend);
+        }
+        else
+        {
+            await SendMessageAsync(socetId,messageToSend);
+        }
+
+       
+
+        //await SendMessageToAllAsync(message);
     }
     
 }

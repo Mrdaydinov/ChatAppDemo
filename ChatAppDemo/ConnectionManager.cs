@@ -6,6 +6,8 @@ namespace ChatAppDemo;
 public class ConnectionManager
 {
     private static ConcurrentDictionary<string, WebSocket> _sockets = new ConcurrentDictionary<string, WebSocket>();
+    
+    
 
     public WebSocket GetSocketById(string id)
     {

@@ -49,7 +49,7 @@ class Program
                 if (result.MessageType == WebSocketMessageType.Text)
                 {
                     string message = Encoding.UTF8.GetString(buffer, 0, result.Count);
-                    Console.WriteLine("Received: " + message);
+                    Console.WriteLine(message);
                 }
             }
         }

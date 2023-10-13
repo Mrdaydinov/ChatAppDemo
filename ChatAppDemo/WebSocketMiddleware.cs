@@ -25,6 +25,11 @@ public class WebSocketMiddleware
         WebSocket socket = await context.WebSockets.AcceptWebSocketAsync();
 
         _webSocketHandler.OnConnected(socket);
+        var buffer = new byte[1024 * 4];
+        var result = await socket.ReceiveAsync(buffer, CancellationToken.None);
+
+        _webSocketHandler.AddContactAsync(_webSocketHandler.GetName(socket, result, buffer), socket);
+        
 
         await Receive(socket, async (result, buffer) =>
         {
