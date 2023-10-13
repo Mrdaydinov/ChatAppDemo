@@ -8,14 +8,7 @@ public abstract class WebSocketHandler
 {
     protected ConnectionManager _connectionManager { get; set; }
 
-    static protected Dictionary<string, string> Contacts = new Dictionary<string, string>()
-    {
-        {"Murad", null},
-        {"Vlad", null},
-        {"Camal", null},
-        {"Azna", null}
-        
-    };
+    static protected Dictionary<string, string> Contacts = new Dictionary<string, string>();
     
     public WebSocketHandler(ConnectionManager connectionManager)
     {
@@ -64,8 +57,7 @@ public abstract class WebSocketHandler
 
     public async Task AddContactAsync(string name, WebSocket socket)
     {
-        
-        Contacts[name] = _connectionManager.GetId(socket);
+        Contacts.TryAdd(name, _connectionManager.GetId(socket));
     }
 
     public string GetName(WebSocket socket, WebSocketReceiveResult result, byte[] buffer)
@@ -96,21 +88,22 @@ public abstract class WebSocketHandler
 
         var message = Encoding.UTF8.GetString(buffer, 0, result.Count);
         var name = message.Split(" ")[0];
-        
-        var socetId = Contacts[name];
-       
-        var sms = string.Join(" ",message.Split(" ")[1..]);
-        var senderName = GetUserName(socket);
-        var messageToSend = $"{senderName}  said {sms}";
-        if (socetId == null)
+        if (!Contacts.Keys.ToList().Contains(name))
         {
-            messageToSend = "User not online";
-            await SendMessageAsync(_connectionManager.GetId(socket),messageToSend);
+            await SendMessageAsync(_connectionManager.GetId(socket),"User not online");
         }
         else
         {
+            var socetId = Contacts[name];
+       
+            var sms = string.Join(" ",message.Split(" ")[1..]);
+            var senderName = GetUserName(socket);
+            var messageToSend = $"{senderName}  said {sms}";
+     
             await SendMessageAsync(socetId,messageToSend);
         }
+       
+        
 
        
 
