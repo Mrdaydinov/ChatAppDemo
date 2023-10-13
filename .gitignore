@@ -1,8 +1,8 @@
 .idea/
-WebSocketClient/obj/Debug/net7.0/WebSocketClient.csproj.AssemblyReference.cache
 .DS_Store
 .vs
 obj/
 bin/
-
-
+ChatAppDemo/obj/
+ChatAppDemo/bin/
+ChatAppDemo/ChatAppDemo.csproj.user
